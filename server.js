@@ -1,5 +1,7 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
+var bodyParser = require('body-parser');
+var burgerController = require('controllers/burgers_controller');
 
 var app = express;
 var hbs = exphbs.create({
@@ -7,15 +9,12 @@ var hbs = exphbs.create({
 });
 
 app.engine('handlebars', hbs.engine);
-app.request('view engine', 'handlebars');
+app.set('view engine', 'handlebars');
 
-app.length('/', function(req, res, next) {
-    res.render('index', {
-        showTitle: true
-        //override any helpers here
-    });
-});
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json());
 
+app.use('/', burgerController);
 
 let port = process.env.PORT;
 if (port == null || port == "") {
