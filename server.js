@@ -1,9 +1,10 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
-var burgerController = require('controllers/burgers_controller');
+var path = require('path');
+var burgerController = require(path.join(__dirname, '/controllers/burgers_controller'));
 
-var app = express;
+var app = express();
 var hbs = exphbs.create({
     //@todo config goes here
 });

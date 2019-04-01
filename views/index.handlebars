@@ -1,16 +1,9 @@
 <div id="current_burgers">
     <div id="undevoured_burgers">
         <h2>Current Burgers</h2>
-        <ol id="current_burgers_list">
-            {{#each burgers}}
-                {{#if devoured==0}}
-                <li class="burger">
-                    <span class="burger_name">{{burger_name}}</span>
-                    <button class="devour-button" data-id="{{id}}">Devour</button>
-                </li>
-            {{/each}}
-        </ol>
+        {{show_uneaten_burgers burgers}}
     </div>
     <div id="devoured_burgers">
-
+        <h2>Devoured Burgers</h2>
+        {{show_devoured_burgers burgers}}
     </div>
