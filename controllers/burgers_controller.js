@@ -51,5 +51,7 @@ router.post('/burger/add', function (req, res) {
         res.redirect('/');
     });
 });
-
+router.get('/public/assets/cee/burger_style.css', function(req, res) {
+    res.sendFile('/public/assets/css/burger_style.css')
+})
 module.exports = router;
