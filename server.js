@@ -6,7 +6,7 @@ var burgerController = require(path.join(__dirname, '/controllers/burgers_contro
 
 var app = express();
 var hbs = exphbs.create({
-    //@todo config goes here
+    defaultLayout: 'main'
 });
 
 app.engine('handlebars', hbs.engine);

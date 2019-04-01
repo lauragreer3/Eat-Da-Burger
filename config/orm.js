@@ -14,16 +14,10 @@ var orm = {
         console.log(orm);
         return this.data;
     },
-    insertOne: function(burger_name, devoured, cb_function) {
-        //make sure devoured is a boolean
-        var devouredDB = 0;
-        if (devoured) {
-            devouredDB = 1;
-        }
-        
+    insertOne: function(burger_name, cb_function) {          
         //make sure burgername isn't blank and is a string
 
-        var query = 'INSERT INTO burgers (burger_name, devoured) VALUES ("' + burger_name + '", ' + devouredDB + ')';
+        var query = 'INSERT INTO burgers (burger_name, devoured) VALUES ("' + burger_name + '", 0)';
         connection.query(query, function(error, results) {
             if (error) throw error;
             console.log('Inserted burger into database');
@@ -38,7 +32,7 @@ var orm = {
         }
         //make sure burgername isn't blank and is a string
 
-        var query = 'UPDATE burgers SET (devoured=' + devouredDB + ') WHERE id=' + burger_id; 
+        var query = 'UPDATE burgers SET devoured=' + devouredDB + ' WHERE id=' + burger_id; 
         connection.query(query, function(error, results) {
             if(error) throw error;
             console.log('updated database entry');

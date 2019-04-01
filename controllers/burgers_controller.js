@@ -4,55 +4,52 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 var burgers = require(path.join(__dirname, '../models/burgers'));
 
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.text());
+router.use(bodyParser.json({type: 'application/vnd.api+json'}));
 
 router.get('/', function (req, res, next) {
     //get data from database
     var my_burgers = burgers.list_burgers(function(my_burgers) {
         console.log('my burgers');
         console.log(my_burgers);
-        res.render('index', {
-            burgers: my_burgers,
-            uneaten: [],
-            devoured: [],
-            //override any helpers here
-            helpers: {
-                show_uneaten_burgers: function (burgers) {
-                    // var uneaten_html = '<ol class="devoured">\n';
-                    burgers.forEach(burger => {
-                        if (burger.devoured == 0) {
-                            this.uneaten.push(burger);
-                            // uneaten_html += '<li class="uneaten_burger">' + burger.burger.name + ' <span class="devour_button"><button id="devour_' + burger.id + '"> Devour<button></span></li>\n';
-                        }
-                    });
-                    return this.uneaten;
-                    // uneaten_html += "</ol>"
-                    //@todo see if this works
-                    // return Handlebars.SafeString(uneaten_html);
-                    // return uneaten_html;
-                },
-                show_devoured_burgers: function (burgers) {
-                    // devoured_html = '<ol class="devoured">';
-                    burgers.forEach(burger => {
-                        if (burger.devoured == 1) {
-                            devoured.push(burger);
-                            // devoured_html += '<li class="devoured_burger">' + burger.burger_name + '</li>\n';
-                        }
-                    });
-                    return this.devoured;
-                    // devoured_html += '</ol>\n';
-                    // return devoured_html;
-                    //@todo check if this safestring works
-                    // return Handlebars.SafeString(devoured_html);
-                }
+        var uneaten = [];
+        var devoured = [];
+        my_burgers.forEach(burger => {
+            if (burger.devoured == 0) {
+                uneaten.push(burger);
+            }
+            else{
+                devoured.push(burger);
             }
         });
+
+        res.render('index', {
+            burgers: my_burgers,
+            uneaten_burgers: uneaten,
+            devoured_burgers: devoured,
+            //override any helpers here
+            helpers: {
+            }
+            
+        });
     });
-
-
 });
 
-router.post('/addBurger', function (req, res, next) {
+
+router.get('/burger/update/:id?', function (req, res) {
+    var burger_id= parseInt(req.params.id);
+    burgers.devour_burger(burger_id, function() {
+        res.redirect('/');
+    });
+});
+router.post('/burger/add', function (req, res) {
     var burgerData = req.body;
-    burgers.devour_burger(burgerData.burger_id);
+    console.log(burgerData);
+    burgers.create_burger(burgerData.burger_name, function() {
+        res.redirect('/');
+    });
 });
+
 module.exports = router;

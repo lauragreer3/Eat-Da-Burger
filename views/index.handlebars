@@ -1,9 +1,35 @@
 <div id="current_burgers">
-    <div id="undevoured_burgers">
+    <div id="undevoured_burgers" class="col-md-6">
         <h2>Current Burgers</h2>
-        {{show_uneaten_burgers burgers}}
+        <ol class="uneaten_burgers">
+            {{#each uneaten_burgers}}
+                <li class="uneaten" data-id="{{id}}">
+                    {{burger_name}} 
+                    <span class="devour-button">
+                        <form action="/burger/update/{{id}}" class="devour-form">
+                            <button class="devour" type="submit">
+                                Devour
+                            </button>
+                        </form>
+                    </span>
+                </li>
+            {{/each}}
+        </ol>    
     </div>
-    <div id="devoured_burgers">
+    <div id="devoured_burgers" class="col-md-6">
         <h2>Devoured Burgers</h2>
-        {{show_devoured_burgers burgers}}
+        <ol class="devoured-burgers">
+            {{#each devoured_burgers}}
+                <li class="devoured" data-id="{{id}}">{{burger_name}}</li>
+            {{/each}}
+        </ol>    
     </div>
+</div>
+<div id="create-a-burger">
+    <h1>Create your Own Burger</h1>
+    <p>If you dont' see a burger you want that is available to devour, please add a burger by typing in your order</p>
+    <form action="/burger/add" id="add-burger-form" method="POST">
+        <label for="burger_name">Burger Name:</label><input name="burger_name" type="text" id="burger_name">
+        <button id="add_burger">Add Burger</button>
+    </form>    
+</div>
